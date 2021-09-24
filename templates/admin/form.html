@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <!-- Обязательные метатеги -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Добавить подборки</title>
+  </head>
+  <body>
+  	<div style="margin-left: 30%; width: 40%; text-align: center; margin-top: 5%;">
+  		<h1 style="color: red;">{{message}}</h1>
+		<h1>Пожалуйста, используйте следующую форму для создания подборок:</h1>
+		<form method="post" action="." enctype="multipart/form-data">
+			{% csrf_token %}
+			<p>Каждая подборка должна идти отдельной строкой, не иметь в названии запятых, точек и других лишних знаков.<br>После того как нажмете "отправить", можете закрыть страницу, зайти и проверить все через пару часов. Обработка будет происходить на сервере.</p>
+			<input required type="file" name="file"><br>
+			<p>Минимальное кол-во картин в подборке:</p>
+			<input required type="number" name='min_count' placeholder="минимальное кол-во фильмов в подборке" value=10>
+			<p>Максимальное кол-во картин в подборке:</p>
+			<input required type="number" name='max_count'placeholder="максимальное кол-во фильмов в подборке" value=20><br>
+			<input type="submit" value='отправить на обработку'>
+		</form>
+	</div>
+  </body>
+</html>

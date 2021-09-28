@@ -2,15 +2,20 @@ import random
 import requests
 import time
 import json
-from kinopoisk.movie import Movie
+
 from bs4 import BeautifulSoup
 from django.http import HttpResponse
+from django.templatetags.static import static
 
 from fake_useragent import UserAgent
 
 from .models import Genre, Country, Actor, Director
 from .models import Picture, Compilation
-from .models import Frame
+
+from django.conf import settings
+
+from django.utils.text import slugify
+from unidecode import unidecode
 
 
 class Parser():
@@ -23,7 +28,7 @@ class Parser():
 		''' принимаем поисковой запрос '''
 
 		#формируем ссылку на парсер яндекса
-		number_films = random.randint(min_number+5, max_number)
+		number_films = random.randint(min_number, max_number)
 		yandex_key = 'https://yandex.ru/search/xml?user=sniffer11&key=03.84419783:0d50a8be485b8062a4ef7a795f72fe69'
 		request = f'url:https://www.kinopoisk.ru/film/* {query} -episodes'
 		if 'сериал' in query:
@@ -55,31 +60,28 @@ class Parser():
 			с апи кинопоиска в формат для платформы,
 			добавляет все данные в бд проекта
 			'''
-		id_list = self.get_all_film_id()
+
+		#id_list = self.get_all_film_id()
+		id_list = ['54233', '4324','66546432','21321','43543','24341','7845','43234','21367',]
 		main_url = 'https://api.kinopoisk.dev/movie?search='
 		token = '&field=id&token=M4JG0H0-MF0M5C0-MTW0XKB-68EDB2S'
 
 		new_complitation = None
 		if not Compilation.objects.filter(name=self.query).exists():
+			path = settings.MEDIA_ROOT
+			slug = slugify(unidecode(self.query))
+			path = path+'compilations/'+slug+'.jpg'
+			out = open(path, 'wb')
+			poster = requests.get(self.Parse_yandex_images(self.query))
+			out.write(poster.content)
+			out.close()
+
 			new_complitation = Compilation(name=self.query,
-										poster=self.Parse_yandex_images(self.query),
-											)
+										poster='compilations/'+slug+'.jpg',
+									)
 			new_complitation.save()
 
 			for i in id_list:
-				data = {
-					    "ids": [
-					        {
-					            "id": i
-					        },
-					        {
-					            "id": 823956
-					        }
-					    ]
-						}
-
-				query = requests.put('https://update.kinopoisk.dev/movie/update', data=data)
-				print(query.text)
 				url = main_url+i+token
 
 				JsonData = requests.get(url).text
@@ -92,6 +94,11 @@ class Parser():
 					except:
 						name_in_english = None
 
+					try:
+						min_age = JsonData["ageRating"]
+					except:
+						min_age = None
+
 					name_in_russian = JsonData["name"] #имя на русском
 					facts = JsonData['facts']
 					facts_list = None
@@ -103,6 +110,22 @@ class Parser():
 					poster = list(JsonData["poster"].values())[0] #постер картины
 					if poster == None:
 						continue
+					else:
+						path = settings.MEDIA_ROOT
+						name = ''
+						if name_in_english != None:
+							name = name_in_english
+						else:
+							name = name_in_russian
+						slug = slugify(unidecode(name))
+						path = path+'posters/'+slug+'.jpg'
+						out = open(path, 'wb')
+						poster = requests.get(poster)
+						out.write(poster.content)
+						out.close()
+						poster = 'posters/'+slug+'.jpg'
+
+
 					slogan = JsonData["slogan"] #слоган
 					description = JsonData["description"] #описание
 					released = JsonData["year"] #дата релиза
@@ -166,7 +189,7 @@ class Parser():
 					 	 						description=description,
 					 	 						released=released,
 					 	 						duration=duration,
-					 	 						#minimum_age=age,
+					 	 						minimum_age=min_age,
 					 	 						type_picture=type_picture,
 					 	 						premiere_in_Russia=premiere_russia,
 					 	 						rating_kinopoisk=rating_kinopoisk,
@@ -264,8 +287,8 @@ class Parser():
 				'https://im0-tub-ru.yandex.net/i?id=d219690e4ceb9ad7a68a1aee3b9d2e51-l&n=13',
 				'https://im0-tub-ru.yandex.net/i?id=02fe70b316080b0f2c8db1e7e6f2b1f0-l&n=13',
 				'https://im0-tub-ru.yandex.net/i?id=8cc35533a7f1d7e8ed47f316f9007151&n=13&exp=1',]
-		seconds = random.randint(5, 20)
-		time.sleep(seconds)
+		seconds = random.randint(1, 5)
+		print(seconds)
 		url = 'https://yandex.ru/images/search?text='
 
 		try:
@@ -279,9 +302,11 @@ class Parser():
 			print('спарсили картинку', link)
 		except:
 			print('не удалось спарсить')
-			key = random.randint(5, 20)
+			key = random.randint(0, 5)
 			return images[key]
-		
+
+
+		time.sleep(seconds)
 		return link
 
 	def get_url_trailer(self):

@@ -53,7 +53,7 @@ class Picture(models.Model):
 	''' модель для картины (фильма, мультфильма, аниме)'''
 	name_in_english = models.CharField('Название на английском', max_length=255, blank=True, null=True)
 	name_in_russian = models.CharField('Название на русском', max_length=255, blank=True, null=True)
-	poster = models.TextField('ссылка на постер', blank=True, null=True)
+	poster = models.ImageField('постер', blank=True, null=True)
 	slogan = models.TextField('слоган', blank=True, null=True)
 	description = models.TextField('описание', blank=True, null=True)
 	released = models.IntegerField('Год выпуска', blank=True, null=True)
@@ -76,7 +76,7 @@ class Picture(models.Model):
 
 class Compilation(models.Model):
 	''' Подборка картин '''
-	poster = models.TextField('ссылка на постер подборки', blank=True, null=True)
+	poster = models.ImageField('постер подборки', blank=True, null=True)
 	pictures = models.ManyToManyField(Picture)
 	name = models.CharField(max_length=255, blank=True, null=True)
 	views = models.IntegerField('Кол-во просмотров подборки', default=0)
@@ -85,13 +85,13 @@ class Compilation(models.Model):
 	def __str__(self):
 		return self.name
 
-class Frame(models.Model):
-	''' Кадр картины '''
-	picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
-	url = models.TextField('ссылка на кадр')
+# class Frame(models.Model):
+# 	''' Кадр картины '''
+# 	picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
+# 	url = models.TextField('ссылка на кадр')
 
-	def __str__(self):
-		return self.picture.name_in_russian
+# 	def __str__(self):
+# 		return self.picture.name_in_russian
 
 
 

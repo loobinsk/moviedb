@@ -12,7 +12,9 @@
   </head>
   <body>
   	<div style="margin-left: 30%; width: 40%; text-align: center; margin-top: 5%;">
+  	{% if message %}
   		<h1 style="color: red;">{{message}}</h1>
+  	{% endif %}
 		<h1>Пожалуйста, используйте следующую форму для создания подборок:</h1>
 		<form method="post" action="." enctype="multipart/form-data">
 			{% csrf_token %}

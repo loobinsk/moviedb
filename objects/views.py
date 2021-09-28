@@ -3,7 +3,10 @@ from .parser import Parser
 from django.http import HttpResponse
 from .models import Country
 import requests
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def form(request):
 	template = 'admin/form.html'
 
@@ -23,3 +26,8 @@ def form(request):
 
 	context = {'message': message}
 	return render(request, template, context)
+
+def test(request):
+	parse = Parser('фильмы про постапокалипсис')
+	parse.data_processing()
+	return HttpResponse('все окей')

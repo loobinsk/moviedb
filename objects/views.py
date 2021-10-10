@@ -12,19 +12,17 @@ def form(request):
 
 	message = None
 	if request.method == 'POST':
-		try:
-			list_complitation = request.FILES['file'].readlines()
-			min_count = int(request.POST['min_count'])
-			max_count = int(request.POST['max_count'])
-			for i in list_complitation:
-				name_complit = i.decode('utf-8')
-				parse = Parser(name_complit, min_number=min_count, max_number=max_count)
-				parse.data_processing()
-			message = f'Создано подборок: {len(list_complitation)}шт, можете проверить.'
-		except:
-			message = 'Произошла ошибка! Пожалуйста, проверьте корректность введенных данных.'
+		list_complitation = request.FILES['file'].readlines()
+		min_count = int(request.POST['min_count'])
+		max_count = int(request.POST['max_count'])
+		for i in list_complitation:
+			name_complit = i.decode('utf-8')
+			parse = Parser(name_complit, min_number=min_count, max_number=max_count)
+			parse.data_processing()
+		message = f'Создано подборок: {len(list_complitation)}шт, можете проверить.'
 
-	context = {'message': message}
+	context = {'message': message,
+				'count': range(0,80)}
 	return render(request, template, context)
 
 def test(request):

@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static embed_video_tags humanize %}
+
+{% block content %}trailer
+    <div class="page page-index">
+      <div class="wrapper">
+        <main>
+          <div class="banner">
+            <div class="beadcrumbs"><a href="#">Главная</a><a href="#">Подборки</a><span>{{ collection.name }}</span></div>
+            <div class="banner-slider">
+              <div class="banner-slider__item"><img class="banner-img" loading="lazy" data-src="{{ collection.poster.url }}" alt="Banner">
+                <h1>{{ collection.name }}</h1>
+              </div>
+            </div>
+          </div>
+          <p class="subbanner">{{ collection.description }}</p>
+          <div class="film-block">
+            <h2>Лучшие фильмы подборки</h2>
+            <div class="film-block__slider">
+              {% for i in best_films %}
+              <div class="film-block__item">
+                <div class="popup popup-film">
+                  <div class="popup__close"><img data-src="{% static 'img/close-popup.svg' %}" alt="Close"></div>
+                  <div class="popup__bgd"></div>
+                  <div class="popup__content">
+                    <div class="youtube" id="{{ i.trailer }}"></div>
+                  </div>
+                </div>
+                <div class="item__points">
+                  <div class="item__points_1"><img loading="lazy" data-src="{% static 'img/item__points_1.png' %}" alt="Camera"><span>{{ i.rating_kinopoisk }}</span></div>
+                  <div class="item__points_2"><img loading="lazy" data-src="{% static 'img/item__points_2.png' %}" alt="Camera"><span>{{ i.rating_imdb }}</span></div>
+                </div>
+                <div class="item__photo"><img loading="lazy" data-src="{{ i.poster.url }}" alt="Film">
+                  <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube-mini.svg' %}" alt="play"><span>Смотреть</span></div>
+                </div>
+                <h3 class="item__title"><a href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
+                <p class="item__type">{{ i.get_tags }}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="film-block">
+            <h2>Новые фильмы подборки</h2>
+            <div class="film-block__slider">
+              {% for i in new_films %}
+              <div class="film-block__item">
+                <div class="popup popup-film">
+                  <div class="popup__close"><img data-src="{% static 'img/close-popup.svg' %}" alt="Close"></div>
+                  <div class="popup__bgd"></div>
+                  <div class="popup__content">
+                    <div class="youtube" id="{{ i.trailer }}"></div>
+                  </div>
+                </div>
+                <div class="item__points">
+                  <div class="item__points_1"><img loading="lazy" data-src="{% static 'img/item__points_1.png' %}" alt="Camera"><span>{{ i.rating_kinopoisk }}</span></div>
+                  <div class="item__points_2"><img loading="lazy" data-src="{% static 'img/item__points_2.png' %}" alt="Camera"><span>{{ i.rating_imdb }}</span></div>
+                </div>
+                <div class="item__photo"><img loading="lazy" data-src="{{ i.poster.url }}" alt="Film">
+                  <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube-mini.svg' %}" alt="play"><span>Смотреть</span></div>
+                </div>
+                <h3 class="item__title"><a href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
+                <p class="item__type">{{ i.get_tags }}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <ol class="films">
+            {% for i in collection.pictures.all %}
+            <li class="films__li">
+              <div class="li__sides">
+                <div class="lft">
+                  <div class="popup popup-film">
+                    <div class="popup__close"><img data-src="{% static 'img/close-popup.svg' %}" alt="Close"></div>
+                    <div class="popup__bgd"></div>
+                    <div class="popup__content">
+                      <div class="youtube" id="{{ i.trailer }}"></div>
+                    </div>
+                  </div>
+                  <div class="film__photo"><img class="photo_img" loading="lazy" data-src="{{ i.poster.url }}" alt="Film">
+                    <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube.svg' %}" alt="Play"><span>Смотреть</span></div>
+                  </div>
+                  <div class="film__rating">
+                    <div class="itm">
+                      <div class="text"><b>{{ i.rating_kinopoisk }}</b><span>Кинопоиск</span></div>
+                      <div class="counter" data-cp-percentage="100" data-cp-color="#FF6D01"></div>
+                    </div>
+                    <div class="itm">
+                      <div class="text"><b>{{ i.rating_imdb }}</b><span>IMDb</span></div>
+                      <div class="counter" data-cp-percentage="100" data-cp-color="#E3AC3C"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="rht">
+                  <a href="{{ i.get_absolute_url }}"><h2 class="film__title">{{ i.name_in_russian }} ({{ i.released }})</h2></a>
+                  {% if i.slogan %}
+                   <p>{{ i.slogan }}</p>
+                  {% endif %}
+                  {% if i.name_in_english  %}
+                   <h2 class="film__title_eng">{{ i.name_in_english }}</h2>
+                  {% else %}
+                    <h2 class="film__title_eng"></h2>
+                  {% endif %}
+                  <div class="info__top">
+                    <div class="info__item">
+                      <h4>Продолжительность</h4>
+                      <p>{{ i.duration }} минут</p>
+                    </div>
+                    <div class="info__item">
+                      <h4>Год выпуска</h4>
+                      <p>{{ i.released }}</p>
+                    </div>
+                    <div class="info__item">
+                      <h4>Премьера фильма в России</h4>
+                      <p>{{ i.released }}</p>
+                    </div>
+                    <div class="info__item">
+                      <h4>Возраст</h4>                      
+                      <p>{% if i.minimum_age %}{{ i.minimum_age }}{% else %}16{% endif %}+</p>
+                    </div>
+                  </div>
+                  <div class="info__centre">
+                    <div class="info__item">
+                      <div class="item__name">Жанр</div>
+                      <div class="item__text">
+                        {% for genre in i.genres.all %}
+                          {{ genre.name }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="info__item">
+                      <div class="item__name">Страна</div>
+                      <div class="item__text">
+                        {% for country in i.country.all %}
+                          {{ country.name }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="info__item">
+                      <div class="item__name">В главных ролях</div>
+                      <div class="item__text">
+                        {% for star in i.starring.all %}
+                          {{ star.name }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="info__item">
+                      <div class="item__name">Участвует в подборках</div>
+                      <div class="item__text">
+                        {% for collection in i.collections.all %}
+                         <a href="{{ collection.get_absolute_url }}">{{ collection.name }}{% if not forloop.last %}<br>{% endif %}</a>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="film__description">
+                    <h3>О чем фильм “{{ i.name_in_russian }} ({{ i.released }})”</h3>
+                    <p>{{ i.description }}</p>
+                    <div class="more">Еще..</div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ol>
+          <!-- <div class="loading"></div> -->
+        </main>
+        <aside class="aside">
+          <div class="aside__block aside__block_like">
+            <h2 class="aside__title">Похожие коллекции</h2>
+            {% if collection.get_similar_collections %}
+              {% for i in collection.get_similar_collections %}
+              <a class="aside__item" href="{{ i.get_absolute_url }}">
+              <div class="item__photo"><img loading="lazy" src="{{ i.poster.url }}" alt="Photo"></div>
+              <div class="item__body">
+                <div class="time"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 0C3.58888 0 0 3.58888 0 8C0 12.4111 3.58888 16 8 16C12.4111 16 16 12.4111 16 8C16 3.58888 12.4111 0 8 0ZM8 15C4.14013 15 1 11.8599 1 8C1 4.14013 4.14013 1 8 1C11.8599 1 15 4.14013 15 8C15 11.8599 11.8599 15 8 15Z" fill="#A4A4A4"/>
+<path d="M8.5 3H7.5V8.20702L10.6465 11.3535L11.3535 10.6465L8.5 7.79295V3Z" fill="#A4A4A4"/>
+</svg><span>{{ i.created | naturaltime }}</span>
+                </div>
+                <p>{{ i.name }}</p>
+              </div></a>
+              {% endfor %}
+            {% else %}
+              <p class="error_message">Похожих коллекций нет.</p>
+            {% endif %}
+          </div>
+          <div class="aside__block aside__block_slider">
+            <h2 class="aside__title">популярные коллекции</h2>
+            <div class="slider__block">
+              {% for i in popular_collections %}
+                <div class="slider__item"><img loading="lazy" data-src="{{ i.poster.url }}" alt="Slide">
+                  <div class="item__text">
+                    <h3>{{ i.name }}</h3>
+                    <a href="{{ i.get_absolute_url }}">Смотреть</a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+{% endblock %}

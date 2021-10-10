@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="page page-catalog">
+      <div class="wrapper">
+        <main>
+          {% if all_collections %}
+          <div class="beadcrumbs"><a href="/">Главная</a>{% if genre %}<a href="{% url 'collection_list' %}">Подборки</a><span>{{genre}}</span>{% else %}<span>Подборки</span>{% endif %}</div>
+          <div class="film-block">
+            <h2>Все подборки{% if genre %} по жанру "{{ genre }}"{% endif %}:</h2>
+          {% elif all_actors %}
+          <div class="beadcrumbs"><a href="/">Главная</a><span>Актеры</span></div>
+          <div class="film-block">
+            <h2>Все Актеры:</h2>
+          {% elif all_films%}
+          <div class="beadcrumbs"><a href="/">Главная</a><span>Фильмы</span></div>
+          <div class="film-block">
+            <h2>Все фильмы:</h2>
+          {% elif all_series %}
+          <div class="beadcrumbs"><a href="/">Главная</a><span>Сериалы</span></div>
+          <div class="film-block">
+            <h2>Все сериалы:</h2>
+          {% elif all_cartoons %}
+          <div class="beadcrumbs"><a href="/">Главная</a><span>Мультфильмы</span></div>
+          <div class="film-block">
+            <h2>Все мультфильмы:</h2>
+          {% elif all_anime %}
+          <div class="beadcrumbs"><a href="/">Главная</a><span>Аниме</span></div>
+          <div class="film-block">
+            <h2>Все аниме:</h2>
+          {% elif collections %}
+          <div class="beadcrumbs"><a href="/">Главная</a><a href="{% url 'collection_list' %}">Подборки</a><span>{{ query }}</span></div>
+          <div class="film-block">
+            <h2>Подборки по запросу "{{ query }}":</h2>
+          {% endif %}
+            <div class="film-podb__block">
+              {% for i in all_collections %}
+                <div class="film-podb__item">
+                  <a href="{{ i.get_absolute_url }}">
+                    <img src="{{ i.poster.url }}" alt="Film">
+                    <h3>{{ i.name }}</h3>
+                  </a>
+                </div>
+              {% endfor %}
+              {% for i in all_actors %}
+                <div class="film-podb__item">
+                  <img src="{{ i.url_photo }}" alt="Film">
+                  <h3>{{ i.name }}</h3>
+                </div>
+              {% endfor %}
+              {% for i in all_films %}
+                <div class="film-podb__item">
+                  <a href="{{ i.get_absolute_url }}">
+                    <img src="{{ i.poster.url }}" alt="Film">
+                    <h3>{{ i.name_in_russian }}</h3>
+                  </a>
+                </div>
+              {% endfor %}
+              {% for i in all_series %}
+                <div class="film-podb__item">
+                  <a href="{{ i.get_absolute_url }}">
+                    <img src="{{ i.poster.url }}" alt="Film">
+                    <h3>{{ i.name_in_russian }}</h3>
+                  </a>
+                </div>
+              {% endfor %}
+              {% for i in all_cartoons %}
+                <div class="film-podb__item">
+                  <a href="{{ i.get_absolute_url }}">
+                    <img src="{{ i.poster.url }}" alt="Film">
+                    <h3>{{ i.name_in_russian }}</h3>
+                  </a>
+                </div>
+              {% endfor %}
+              {% for i in all_anime %}
+                <div class="film-podb__item">
+                  <a href="{{ i.get_absolute_url }}">
+                    <img src="{{ i.poster.url }}" alt="Film">
+                    <h3>{{ i.name_in_russian }}</h3>
+                  </a>
+                </div>
+              {% endfor %}
+              {% for i in collections %}
+                <div class="film-podb__item">
+                  <a href="{{ i.get_absolute_url }}">
+                    <img src="{{ i.poster.url }}" alt="Film">
+                    <h3>{{ i.name }}</h3>
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+            <!-- <div class="loading"></div> -->
+          </div>
+        </main>
+      </div>
+    </div>
+{% endblock %}

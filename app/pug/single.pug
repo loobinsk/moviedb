@@ -1,0 +1,514 @@
+extends header.pug
+
+block content
+
+	.page.page-single
+		.wrapper
+			main
+				.banner
+					.beadcrumbs
+						a(href="#") Главная
+						a(href="#") Фильмы
+						span Фильмы похожие на Большой куш
+					.banner-slider
+						.banner-slider__item
+							img(loading="lazy" data-src="img/film3.png" alt="Banner")
+							h1 Фильмы похожие на Большой куш
+							.price
+								.price__top
+									b.price__b 8.5
+									.price__rht
+										span.mark Оценка
+										ul.stars
+											li.star
+												<svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M6 0L7.34708 4.1459H11.7063L8.17963 6.7082L9.52671 10.8541L6 8.2918L2.47329 10.8541L3.82037 6.7082L0.293661 4.1459H4.65292L6 0Z" fill="#FFD644"/>
+												</svg>
+											li.star
+												<svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M6 0L7.34708 4.1459H11.7063L8.17963 6.7082L9.52671 10.8541L6 8.2918L2.47329 10.8541L3.82037 6.7082L0.293661 4.1459H4.65292L6 0Z" fill="#FFD644"/>
+												</svg>
+											li.star
+												<svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M6 0L7.34708 4.1459H11.7063L8.17963 6.7082L9.52671 10.8541L6 8.2918L2.47329 10.8541L3.82037 6.7082L0.293661 4.1459H4.65292L6 0Z" fill="#FFD644"/>
+												</svg>
+											li.star
+												<svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M6 0L7.34708 4.1459H11.7063L8.17963 6.7082L9.52671 10.8541L6 8.2918L2.47329 10.8541L3.82037 6.7082L0.293661 4.1459H4.65292L6 0Z" fill="#FFD644"/>
+												</svg>
+											li.star
+												<svg width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M6 0L7.34708 4.1459H11.7063L8.17963 6.7082L9.52671 10.8541L6 8.2918L2.47329 10.8541L3.82037 6.7082L0.293661 4.1459H4.65292L6 0Z" fill="#D8D8D8"/>
+												</svg>
+										.price__bottom IMDb: 
+											span 7.5
+								.price__bottom Рейтинг IMDb: 
+									span 7.5
+						.banner-slider__item
+							img(loading="lazy" data-src="img/film3.png" alt="Banner")
+							h1 Фильмы похожие на Большой куш
+				p.subbanner Мы собрали для Вас подборку лучших фильмов по теме “{название подборки}” с рейтингом от {минимальный рейтинг фильмов из подборки} и до {максимальный рейтинг фильмов из подборки}. В неё вошли фильмы следующих жанров: {жанр1}({число раз}), {жанр2}({число раз}), {жанр3}({число раз}). Самый новый фильм - {год} года, самый старый фильм - {год} года. Продолжительность фильмов от {минимальная продолжительность} до {максимальная продолжительность}. Выбирайте фильм и приятного просмотра!
+				.films
+					.li__sides
+						.lft
+							.film__photo
+								img(loading="lazy" data-src="img/banner-index.png" alt="Film").photo_img
+							.film__rating
+								.itm
+									.text
+										b 8.9
+										span Кинопоиск
+									.counter(data-cp-percentage="100" data-cp-color="#FF6D01")
+								.itm
+									.text
+										b 8
+										span IMDb
+									.counter(data-cp-percentage="100" data-cp-color="#E3AC3C")
+							.film__trailer(data-film="trailer1")
+								.popup.popup-film
+									.popup__close
+										img(src="img/close-popup.svg" alt="Close")
+									.popup__bgd
+									.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+								img(data-src="img/trailer.png" alt="Film").photo_img
+								.photo__play
+									img(loading="lazy" data-src="img/youtube.svg" alt="Play")
+									span Смотреть трейлер
+
+
+						.rht
+							h2.film__title Гениальное ограбление (2021)
+							h2.film__title_eng Way Down
+							.info__top
+								.info__item
+									h4 Продолжительность
+									p 1 Час 58 минут
+								.info__item
+									h4 Год выпуска
+									p 2021
+								.info__item
+									h4 Премьера фильма в России
+									p 22 Апреля 2021
+								.info__item
+									h4 Возраст
+									p 16+
+							.info__centre
+								.info__item
+									.item__name Жанр
+									.item__text Боевик, Комедия, Драма
+								.info__item
+									.item__name Страна
+									.item__text США
+								.info__item
+									.item__name В главных ролях
+									.item__text Адам Уэст, Берт Уорд, Уильям Шетнер
+								.info__item
+									.item__name Участвует в подборках
+									.item__text
+										a(href="#") 2021
+										a(href="#") Нетфликс
+										a(href="#") Вестерны
+										a(href="#") Аниме
+										a(href="#") Лучшие фильмы 2021
+							.film__description
+								h3 О чем фильм “Гениальное ограбление (2021)”
+								p Идейные соображения высшего порядка, а также сложившаяся структура организации требуют от нас анализа направлений прогрессивного развития. Равным образом постоянное информационно-пропагандистское обеспечение нашей деятельности влечет за собой процесс внедрения и модернизации направлений прогрессивного развития. <br /><br />Постоянный количественный рост и сфера нашей активности представляет собой интересный эксперимент проверки систем массового участия. Разнообразный и богатый опыт постоянное информационно-пропагандистское обеспечение нашей деятельности влечет за собой процесс внедрения и модернизации позиций, занимаемых участниками в отношении поставленных задач.<br /><br />Равным образом постоянное информационно-пропагандистское обеспечение нашей деятельности влечет за собой процесс внедрения и модернизации направлений.
+								.more Еще
+							.authors
+								h3 Режиссер
+								.authors__block
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Гай Ричи
+									.authors__films
+										p <b>8.7</b> Джентльмены <span>2020</span>
+										p <b>8.5</b> Шерлок Холмс <span>2009</span>
+								h3 В ролях
+								.authors__block
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Джейсон Стэтхэм
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Рози Хантингтон
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Брюс Уиллис
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Шон Бин
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Джейсон Стэтхэм
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Рози Хантингтон
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Джейсон Стэтхэм
+									.authors__item
+										img(data-src="img/author.png" alt="Author")
+										span Рози Хантингтон
+								.authors__all Все актеры и съемочная группа
+				.film-block
+					h2 Лучшие фильмы подборки
+					.film-block__slider
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Шан-Чи и легенда десяти колец
+							p.item__type 2020, Фантастика, Великобритания
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+				.film-block
+					h2 Новые фильмы подборки
+					.film-block__slider
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/banner-index.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+						.film-block__item
+							.popup.popup-film
+								.popup__close
+									img(data-src="img/close-popup.svg" alt="Close")
+								.popup__bgd
+								.popup__content(data-src="https://www.youtube.com/embed/ibig0lXxXDI")
+							.item__points
+								.item__points_1
+									img(loading="lazy" data-src="img/item__points_1.png" alt="Camera")
+									span 4.8
+								.item__points_2
+									img(loading="lazy" data-src="img/item__points_2.png" alt="Camera")
+									span 4.7
+							.item__photo
+								img(loading="lazy" data-src="img/film1.png" alt="Film")
+								.photo__play
+									img(loading="lazy" data-src="img/youtube-mini.svg" alt="play")
+									span Смотреть
+							h3.item__title
+								a(href="#") Механик
+							p.item__type 2020, Драма, США
+				.film-block
+					h2 Все похожие фильмы
+					.film-like__block
+						a(href="#").film-like__item
+							img(data-src="img/banner-index.png" alt="Film")
+							h3 Мужские слезы
+							p 2020, Драма, США
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Гениальное ограбление
+							p 2020, Фантастика, Великобритания
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Мужские слезы
+							p 2020, Драма, США
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Мужские слезы
+							p 2020, Драма, США
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Мужские слезы
+							p 2020, Драма, США
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Гениальное ограбление
+							p 2020, Фантастика, Великобритания
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Мужские слезы
+							p 2020, Драма, США
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Мужские слезы
+							p 2020, Драма, США
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Мужские слезы
+							p 2020, Драма, США
+						a(href="#").film-like__item
+							img(data-src="img/film-like.png" alt="Film")
+							h3 Мужские слезы
+							p 2020, Драма, США
+				.film-block
+					h2 Этот фильм в подборках:
+					.film-podb__block
+						a(href="#").film-podb__item
+							img(data-src="img/podb1.png" alt="Film")
+							h3 Фильмы про настоящих безумцев
+						a(href="#").film-podb__item
+							img(data-src="img/banner-index.png" alt="Film")
+							h3 Фильмы про настоящих безумцев
+						a(href="#").film-podb__item
+							img(data-src="img/podb1.png" alt="Film")
+							h3 Фильмы про настоящих безумцев
+						a(href="#").film-podb__item
+							img(data-src="img/podb1.png" alt="Film")
+							h3 Фильмы про настоящих безумцев
+						a(href="#").film-podb__item
+							img(data-src="img/podb1.png" alt="Film")
+							h3 Фильмы про настоящих безумцев
+						a(href="#").film-podb__item
+							img(data-src="img/podb1.png" alt="Film")
+							h3 Фильмы про настоящих безумцев
+						a(href="#").film-podb__item
+							img(data-src="img/podb1.png" alt="Film")
+							h3 Фильмы про настоящих безумцев
+						a(href="#").film-podb__item
+							img(data-src="img/podb1.png" alt="Film")
+							h3 Фильмы про настоящих безумцев
+
+
+			include aside.pug
+
+
+	include footer.pug
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

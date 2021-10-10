@@ -11,7 +11,9 @@ click-didyoumean==0.0.3
 click-plugins==1.1.1
 click-repl==0.2.0
 Django==3.0
+django-embed-video==1.4.0
 django-grappelli==2.15.1
+django-taggit==1.5.1
 fake-headers==1.0.2
 fake-useragent==0.1.11
 future==0.18.2
@@ -21,7 +23,9 @@ kinopoiskpy==0.8.2
 kombu==5.1.0
 lxml==4.6.3
 Pillow==8.3.2
+pkg_resources==0.0.0
 prompt-toolkit==3.0.20
+psycopg2==2.8.6
 python-dateutil==2.8.2
 pytz==2021.1
 requests==2.26.0

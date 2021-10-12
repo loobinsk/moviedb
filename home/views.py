@@ -11,7 +11,6 @@ from django.db.models import F
 genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 def homepage(request):
-	prs = Parser()
 	template = 'base.html'
 
 	new_collections = Compilation.objects.all().order_by('-created')[:5]
@@ -44,16 +43,15 @@ def search_page(request):
 		}
 	return render(request, template, context)
 
-def collection_detail(request, pk):
-	prs = Parser()
+def collection_detail(request, slug):
 	template = 'collection_detail.html'
 
-	collection = Compilation.objects.get(pk=pk)
+	collection = Compilation.objects.get(slug=slug)
 	collection.views += 1
-	collection.save(update_fields=['views'])
+	collection.save()
 	best_films = Picture.objects.filter(collections=collection).order_by('-rating_kinopoisk')[:15]
 	new_films = Picture.objects.filter(collections=collection).order_by('-released')[:15]
-	popular_collections = Compilation.objects.all().order_by('-views').exclude(pk=pk)[:5]
+	popular_collections = Compilation.objects.all().order_by('-views').exclude(slug=slug)[:5]
 
 	context = {
 		'collection': collection,
@@ -65,12 +63,12 @@ def collection_detail(request, pk):
 	return render(request, template, context)
 
 
-def film_detail(request, pk):
+def film_detail(request, slug):
 	template = 'picture_detail.html'
 
 	new_collections = Compilation.objects.all().order_by('-created')[:5]
 	popular_collections = Compilation.objects.all().order_by('-views')[:5]
-	picture = Picture.objects.get(pk=pk)
+	picture = Picture.objects.get(slug=slug)
 
 	context = {
 		'new_collections': new_collections,

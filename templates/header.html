@@ -32,7 +32,6 @@
             </div>
             <ul class="header__menu">
               <li class="menu__li"><a class="menu__link" href="/">Главная</a></li>
-              <li class="menu__li"><a class="menu__link" href="{% url 'collection_list' %}">Подборки</a>
 <!--                 <ul>
                   <li><a href="#">Фильмы</a></li>
                   <li><a href="#">Сериалы</a></li>
@@ -40,7 +39,7 @@
                   <li><a href="#">Аниме</a></li>
                 </ul> -->
               </li>
-              <li class="menu__li have_child"><a class="menu__link" href="#">По жанру</a>
+              <li class="menu__li have_child"><a class="menu__link" href="{% url 'collection_list' %}">Подборки</a>
                 <ul>
                   {% for i in genres %}
                     <li><a href="{{ i.get_absolute_url }}">{{ i.name }}</a></li>

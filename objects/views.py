@@ -21,9 +21,26 @@ def form(request):
 			parse.data_processing()
 		message = f'Создано подборок: {len(list_complitation)}шт, можете проверить.'
 
-	context = {'message': message,
-				'count': range(0,80)}
+	context = {'message': message}
 	return render(request, template, context)
+
+def form_detail(request):
+	template = 'admin/form_detail.html'
+
+	if request.method == 'POST':
+		query = request.POST['query']
+		name = request.POST['name']
+		desc = request.POST['desc']
+		count = request.POST['count']
+		parse = Parser(
+			query=query, 
+			specific_number=count, 
+			name=name, 
+			desc=desc,
+			)
+		parse.data_processing()
+
+	return render(request, template)
 
 def test(request):
 	parse = Parser('фильмы про постапокалипсис')

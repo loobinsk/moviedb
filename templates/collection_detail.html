@@ -5,15 +5,15 @@
     <div class="page page-index">
       <div class="wrapper">
         <main>
-          <div class="banner">
+          <div class="poster">
             <div class="beadcrumbs"><a href="#">Главная</a><a href="#">Подборки</a><span>{{ collection.name }}</span></div>
-            <div class="banner-slider">
-              <div class="banner-slider__item"><img class="banner-img" loading="lazy" data-src="{{ collection.poster.url }}" alt="Banner">
+            <div class="poster-slider">
+              <div class="poster-slider__item"><img class="poster-img" loading="lazy" data-src="{{ collection.poster.url }}" alt="Poster">
                 <h1>{{ collection.name }}</h1>
               </div>
             </div>
           </div>
-          <p class="subbanner">{{ collection.description }}</p>
+          <p class="subposter">{{ collection.description }}</p>
           <div class="film-block">
             <h2>Лучшие фильмы подборки</h2>
             <div class="film-block__slider">
@@ -33,7 +33,7 @@
                 <div class="item__photo"><img loading="lazy" data-src="{{ i.poster.url }}" alt="Film">
                   <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube-mini.svg' %}" alt="play"><span>Смотреть</span></div>
                 </div>
-                <h3 class="item__title"><a href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
+                <h3><a class="item__title" href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
                 <p class="item__type">{{ i.get_tags }}</p>
               </div>
               {% endfor %}
@@ -58,7 +58,7 @@
                 <div class="item__photo"><img loading="lazy" data-src="{{ i.poster.url }}" alt="Film">
                   <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube-mini.svg' %}" alt="play"><span>Смотреть</span></div>
                 </div>
-                <h3 class="item__title"><a href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
+                <h3><a class="item__title" href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
                 <p class="item__type">{{ i.get_tags }}</p>
               </div>
               {% endfor %}

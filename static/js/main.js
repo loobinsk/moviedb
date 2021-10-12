@@ -66,8 +66,7 @@ if(document.querySelector('.wow'))
 
 $(document).ready(function () {
 
-
-	$('.banner h1').each(function () {
+	$('.poster h1').each(function () {
 		if( $(this).width() > 1100 ){
 			$(this).css('max-width', '100%')
 		}
@@ -84,8 +83,6 @@ $(document).ready(function () {
 			$(this).hide()
 		}
 	})
-
-
 
 
 
@@ -170,6 +167,11 @@ $(document).ready(function () {
 		// $(this).parent().find('iframe').attr("src", '');
 	})
 
+	if( $('.poster-slider__item').length == 1 ){
+		$('.slick-dots').hide()
+		console.log($('.slick-dots').hide())
+	}
+
 
 
 
@@ -203,7 +205,7 @@ $(document).ready(function () {
 		]
 	})
 
-	$('.banner-slider').slick({
+	$('.poster-slider').slick({
 		arrows: false,
 		dots: true,
 		infinite: false,
@@ -267,7 +269,7 @@ $(document).ready(function () {
 		let heightDocument = $(document).height()
 		let heightFooter = $('footer').height()
 
-		let heightSum = ((scrollTopDocument + heightWindow)/0.8) - heightDocument + heightFooter
+		let heightSum = ((scrollTopDocument + heightWindow)/0.2) - heightDocument + heightFooter
 
 		// Каталог
 		// Каталог
@@ -444,11 +446,6 @@ $(document).ready(function () {
 	})
 
 })
-
-
-
-
-
 
 
 

@@ -19,7 +19,7 @@ class Genre(models.Model):
 		return self.name
 
 	def save(self):
-		self.slug = slugify(unidecode(self.name))
+		self.slug = f'{self.id}-{slugify(unidecode(self.name))}'
 		super(Genre, self).save()
 
 	def get_genre_collections(self):
@@ -77,7 +77,7 @@ class Picture(models.Model):
 	country = models.ManyToManyField(Country)
 	starring = models.ManyToManyField(Actor)
 	genres = models.ManyToManyField(Genre, related_name='pictures')
-	banner = models.ImageField(upload_to='banners/')
+	preview = models.ImageField(upload_to='previews/')
 	similar_picture = models.ManyToManyField('self')
 	duration = models.IntegerField('Длительность', blank=True, null=True, default=0)
 	minimum_age = models.IntegerField('Минимальный возраст', blank=True, null=True)
@@ -85,6 +85,7 @@ class Picture(models.Model):
 	premiere_in_Russia = models.CharField('Премьера в России', max_length=255, blank=True, null=True)
 	rating_kinopoisk = models.FloatField('рейтинг от кинопоиска', blank=True, null=True)
 	rating_imdb = models.FloatField('рейтинг от IMDB', blank=True, null=True)
+	slug = models.SlugField(blank=True)
 	facts = models.TextField('список фактов', blank=True, null=True)
 	created = models.DateTimeField('Дата создания картины',auto_now_add=True)
 
@@ -95,7 +96,7 @@ class Picture(models.Model):
 		return f'{self.name_in_russian}, {self.released}, {self.id}'
 		
 	def get_absolute_url(self):
-		return reverse('film_detail', args=[self.pk])
+		return reverse('film_detail', args=[self.slug])
 
 	def get_count_similar_pictures(self):
 		return self.similar_picture.count()
@@ -105,6 +106,10 @@ class Picture(models.Model):
 
 	def get_new_similar_pictures(self):
 		return self.similar_picture.order_by('-released')
+
+	def save(self):
+		self.slug = f'{self.id}-{slugify(unidecode(self.name_in_russian))}'
+		super(Picture, self).save()
 
 class PictureFrames(models.Model):
 	picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
@@ -124,6 +129,7 @@ class Compilation(models.Model):
 	main_genre = models.ManyToManyField(Genre, related_name='collections_genre')
 	main_genre_text = models.TextField()
 	tags = TaggableManager()
+	slug = models.SlugField(blank=True)
 	views = models.IntegerField('Кол-во просмотров подборки', default=0)
 	created = models.DateTimeField('Дата создания', auto_now_add=True)
 
@@ -131,7 +137,7 @@ class Compilation(models.Model):
 		return self.name
 
 	def get_absolute_url(self):
-		return reverse('collection_detail', args=[self.pk])
+		return reverse('collection_detail', args=[self.slug])
 
 	def get_pictures_count(self):
 		return self.pictures.count()
@@ -199,6 +205,9 @@ class Compilation(models.Model):
 		
 		return similar_collections
 
+	def save(self):
+		self.slug = f'{slugify(unidecode(self.name))}'
+		super(Compilation, self).save()
 
 
 

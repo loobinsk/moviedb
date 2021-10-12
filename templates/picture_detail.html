@@ -7,10 +7,10 @@
     <div class="page page-single">
       <div class="wrapper">
         <main>
-          <div class="banner">
+          <div class="poster">
             <div class="beadcrumbs"><a href="#">Главная</a><a href="#">Фильмы</a><span>{{ picture.name_in_russian }}</span></div>
-            <div class="banner-slider">
-              <div class="banner-slider__item"><img loading="lazy" data-src="{{ picture.banner.url }}" alt="Banner">
+            <div class="poster-slider">
+              <div class="poster-slider__item"><img loading="lazy" data-src="{{ picture.preview.url }}" alt="poster">
                 <h1>{{ picture.name_in_russian }}</h1>
                 <div class="price">
                   <div class="price__top"><b class="price__b">{{ picture.rating_kinopoisk }}</b>
@@ -45,7 +45,6 @@
               </div>
             </div>
           </div>
-          <p class="subbanner">{{ picture.description }}</p>
           <div class="films">
             <div class="li__sides">
               <div class="lft">
@@ -67,7 +66,7 @@
                     <div class="popup__content">
                       <div class="youtube" id="{{ picture.trailer }}"></div>
                     </div>
-                  </div><img class="photo_img" data-src="{{ picture.banner.url }}" alt="Film">
+                  </div><img class="photo_img" data-src="{{ picture.preview.url }}" alt="Film">
                   <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube.svg' %}" alt="Play"><span>Смотреть трейлер</span></div>
                 </div>
               </div>
@@ -161,7 +160,7 @@
                   <div class="item__photo"><img loading="lazy" data-src="{{ i.poster.url }}" alt="Film">
                     <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube-mini.svg' %}" alt="play"><span>Смотреть</span></div>
                   </div>
-                  <h3 class="item__title"><a href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
+                  <h3><a class="item__title" href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
                   <p class="item__type">{{ i.get_tags }}</p>
                 </div>
                 {% endfor %}
@@ -186,7 +185,7 @@
                 <div class="item__photo"><img loading="lazy" data-src="{{ i.poster.url }}" alt="Film">
                   <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube-mini.svg' %}" alt="play"><span>Смотреть</span></div>
                 </div>
-                <h3 class="item__title"><a href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
+                <h3><a class="item__title" href="{{ i.get_absolute_url }}">{{ i.name_in_russian }}</a></h3>
                 <p class="item__type">{{ i.get_tags }}</p>
               </div>
               {% endfor %}
@@ -196,7 +195,7 @@
             <h2>Все похожие фильмы</h2>
             <div class="film-like__block">
               {% for i in picture.similar_picture.all %}
-                <a class="film-like__item" href="#">
+                <a class="film-like__item" href="{{ i.get_absolute_url }}">
                 <img data-src="{{ i.poster.url }}" alt="Film">
                 <h3>{{ i.name_in_russian }}</h3>
                 <p>{{ i.get_tags }}</p></a>

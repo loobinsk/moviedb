@@ -15,6 +15,7 @@ from django.conf import settings
 from django.utils.text import slugify
 from unidecode import unidecode
 from fake_useragent import UserAgent
+from collections import OrderedDict
 
 
 
@@ -24,13 +25,21 @@ class Parser():
 		ищет фильм в апи кинопоиска,
 		добавляет все данные в бд проекта
 		'''
-	def __init__(self, query='что', min_number=10, max_number=20, specific_number=None):
+	def __init__(self, query=None, min_number=10, max_number=20, specific_number=None, name=None, desc=None):
 		''' принимаем поисковой запрос '''
 
 		#формируем ссылку на парсер яндекса
 		number_films = random.randint(min_number, max_number)
 		if specific_number:
 			number_films = specific_number
+
+		self.count= int(number_films)
+
+		self.name = None
+		self.desc = None
+		if name:
+			self.name = name
+			self.desc = desc
 		self.yandex_key = 'https://yandex.ru/search/xml?user=sniffer11&key=03.84419783:0d50a8be485b8062a4ef7a795f72fe69'
 		self.request = f'url:https://www.kinopoisk.ru/film/* {query} -episodes'
 
@@ -41,7 +50,7 @@ class Parser():
 		elif 'ильм' in query and 'ериал' not in query:
 			self.request = f'url:https://www.kinopoisk.ru/film/* {query} -episodes -series'
 
-		self.number_films = f'&groupby=groups-on-page%3D{number_films}'
+		self.number_films = f'&groupby=groups-on-page%3D{100}'
 		self.URL = self.yandex_key+'&query='+self.request+'&l10n=ru'+self.number_films
 		self.query = query
 
@@ -68,39 +77,88 @@ class Parser():
 			с апи кинопоиска в формат для платформы,	
 			добавляет все данные в бд проекта
 			'''
-		if not Compilation.objects.filter(name=self.query).exists():
+		if self.name and self.desc:
+			if not Compilation.objects.filter(name=self.name).exists():
 
-			id_list = self.get_all_film_id()
-			print(id_list)
+				id_list = self.get_all_film_id()
+				print(id_list)
 
-			path = settings.MEDIA_ROOT
-			slug = slugify(unidecode(self.query))[:60]
-			path = path+'compilations/'+slug+'.jpg'
-			out = open(path, 'wb')
-			poster = requests.get(self.Parse_yandex_images(self.query))
-			out.write(poster.content)
-			out.close()
+				path = settings.MEDIA_ROOT
+				slug = slugify(unidecode(self.query))[:60]
+				path = path+'compilations/'+slug+'.jpg'
+				out = open(path, 'wb')
+				poster = requests.get(self.Parse_yandex_images(self.query))
+				out.write(poster.content)
+				out.close()
 
-			new_complitation = Compilation(name=self.query,
-										poster='compilations/'+slug+'.jpg',
-									)
-			new_complitation.save()
-			new_complitation.add_tags()
-			pictures = []
-			for i in id_list:
-				if self.create_picture(i) != False:
-					picture = self.create_picture(i)
-					pictures.append(picture)
-					similar_pictures = self.add_all_similar_pictures(i)
-					for i in similar_pictures:
-						picture.similar_picture.add(i)
+				new_complitation = Compilation(name=self.name,
+											poster='compilations/'+slug+'.jpg',
+											description=self.desc,
+										)
+				new_complitation.save()
+				new_complitation.add_tags()
+				pictures = []
+				count = 0
+				count_query = self.count
+				listf=[]
+				while count < count_query:
+					i=id_list[count]
+					if self.create_picture(i) != False and i not in listf:
+						picture = self.create_picture(i)
+						pictures.append(picture)
+						similar_pictures = self.add_all_similar_pictures(i)
+						for i in similar_pictures:
+							picture.similar_picture.add(i)
+						count+=1
+						listf.append(i)
+					else:
+						count_query += 1
+						count+=1
+					print(count, count_query)
 
-			self.add_pictures_in_collection(pictures, new_complitation)
-			if new_complitation.pictures.count() < 1:
-				new_complitation.delete()
-			else:
-				new_complitation.add_description()
-				new_complitation.add_main_genre()
+				self.add_pictures_in_collection(pictures, new_complitation)
+				if new_complitation.pictures.count() < 1:
+					new_complitation.delete()
+				else:
+					new_complitation.add_main_genre()
+			print('алгоритм закончил работу')
+		else:
+			if not Compilation.objects.filter(name=self.query).exists():
+
+				id_list = self.get_all_film_id()
+				print(id_list)
+
+				path = settings.MEDIA_ROOT
+				slug = slugify(unidecode(self.query))[:60]
+				path = path+'compilations/'+slug+'.jpg'
+				out = open(path, 'wb')
+				poster = requests.get(self.Parse_yandex_images(self.query))
+				out.write(poster.content)
+				out.close()
+
+				new_complitation = Compilation(name=self.query,
+											poster='compilations/'+slug+'.jpg',
+										)
+				new_complitation.save()
+				new_complitation.add_tags()
+				pictures = []
+				for i in range(0, self.count):
+					id_ = id_list[i]
+
+					if self.create_picture(id_) != False:
+						picture = self.create_picture(id_)
+						pictures.append(picture)
+						# similar_pictures = self.add_all_similar_pictures(id_)
+						# for i in similar_pictures:
+						# 	picture.similar_picture.add(i)
+
+				self.add_pictures_in_collection(pictures, new_complitation)
+				if new_complitation.pictures.count() < 1:
+					new_complitation.delete()
+				else:
+					new_complitation.add_description()
+					new_complitation.add_main_genre()
+
 
 		return True
 
@@ -134,6 +192,7 @@ class Parser():
 			if not name_in_russian:
 				print('нет названия на русском')
 				return False
+
 			facts = JsonData['facts']
 			facts_list = None
 			if facts != None:
@@ -195,9 +254,7 @@ class Parser():
 				else:
 					type_picture = 0
 			except:
-				type_picture = None
-				print('нет типа картины, идем дальше')
-				return False
+				type_picture = 0
 
 			try:
 				premiere_russia = JsonData["premiere"]['russia'].split('-')[0] #Премьера в России
@@ -250,13 +307,13 @@ class Parser():
 					reequest = requests.get(self.Parse_yandex_images(f'{new_picture.name_in_russian} {new_picture.released}'))
 				path = settings.MEDIA_ROOT
 				slug = slugify(unidecode(new_picture.name_in_russian))[:60]
-				path = path+'banners/'+slug+'.jpg'
+				path = path+'previews/'+slug+'.jpg'
 				out = open(path, 'wb')
 				poster = reequest
 				out.write(poster.content)
 				out.close()
-				new_picture.banner = 'banners/'+slug+'.jpg'
-				new_picture.save(update_fields=['banner'])
+				new_picture.preview = 'previews/'+slug+'.jpg'
+				new_picture.save()
 				print('картина создана')
 
 				genres = JsonData["genres"] #список жанров
@@ -301,8 +358,8 @@ class Parser():
 						
 					new_picture.starring.add(new_actor)
 
+					new_director = None
 					if i[4] == "director":
-						new_director = None
 						director_name = i[1]
 						if not director_name:
 							director_name = i[2]
@@ -312,7 +369,8 @@ class Parser():
 							new_director.save()
 						else:
 							new_director = Director.objects.get(name=director_name)
-					new_picture.directors.add(new_director)
+					if new_director:
+						new_picture.directors.add(new_director)
 			else:
 				new_picture = Picture.objects.get(name_in_english=name_in_english,
 										name_in_russian=name_in_russian,
@@ -380,7 +438,6 @@ class Parser():
 		''' принимает фильм, отправляет запрос в кинопоиск,
 		получает все похожие картины на данный фильм.'''
 		ua = UserAgent()
-		time.sleep(5)
 		headers = {
 			'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
 			'Accept-Language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -392,8 +449,9 @@ class Parser():
 			'Upgrade-Insecure-Requests': '1',
 			'User-Agent': ua.chrome,
 		}
-
-		request = requests.get(f'https://www.kinopoisk.ru/film/{id_picture}/like/', headers=headers)
+		request = requests.Session()
+		request.headers.update(headers)
+		request = request.get(f'https://www.kinopoisk.ru/film/{id_picture}/like/')
 		soup = BeautifulSoup(request.content, 'html.parser')
 		
 		href = soup.findAll('a', class_='all')
@@ -435,7 +493,7 @@ class Parser():
 
 		print('итоговый айди', video_id)
 		picture.trailer = video_id
-		picture.save(update_fields=['trailer'])
+		picture.save()
 
 		return True
 

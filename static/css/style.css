@@ -104,7 +104,10 @@ ul {
 body {
   background: #171717 url(../img/background.png) no-repeat;
   background-position: 0 180px;
-  zoom: .8
+  zoom: .8;
+  display: flex;
+  flex-direction: column;
+  min-height: 125vh;
 }
 header {
   background: #171717;
@@ -494,11 +497,12 @@ header {
   color: #fff;
   margin-top: 10px
 }
-.subbanner {
+.subposter {
   padding-bottom: 20px
 }
 .page {
   margin-top: 30px;
+  margin-bottom: 100px;
   position: relative
 }
 .page-single .films .lft .film__photo:hover .photo_img {
@@ -837,19 +841,21 @@ main {
 .slick-dots li button {
   display: none
 }
-.banner {
+.poster {
   height: 448px;
   margin-bottom: 40px;
   position: relative
 }
-.banner .slick-dots {
+
+.poster .slick-dots {
   bottom: 20px
 }
-.banner-slider {
+
+.poster-slider {
   max-height: 448px;
   position: relative
 }
-.banner-slider .price {
+.poster-slider .price {
   bottom: 10px;
   right: 10px;
   position: absolute;
@@ -864,7 +870,7 @@ main {
   padding-top: 5px;
   min-width: 230px
 }
-.banner-slider .price__top {
+.poster-slider .price__top {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -872,7 +878,7 @@ main {
   -ms-flex-align: center;
   align-items: center
 }
-.banner-slider .price__rht .mark {
+.poster-slider .price__rht .mark {
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
@@ -880,30 +886,30 @@ main {
   display: block;
   margin-bottom: 5px
 }
-.banner-slider .price__rht .price__bottom {
+.poster-slider .price__rht .price__bottom {
   display: none
 }
-.banner-slider .price__bottom {
+.poster-slider .price__bottom {
   font-size: 16px;
   line-height: 19px;
   color: #fff
 }
-.banner-slider .price__bottom span {
+.poster-slider .price__bottom span {
   font-size: 16px;
   line-height: 19px;
   color: #e3ac3c
 }
-.banner-slider .price .star {
+.poster-slider .price .star {
   margin: 0 2.5px
 }
-.banner-slider .price__b {
+.poster-slider .price__b {
   font-size: 48px;
   line-height: 56px;
   text-align: center;
   color: #e3ac3c;
   margin-right: 15px
 }
-.banner-slider .price .stars {
+.poster-slider .price .stars {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -913,15 +919,15 @@ main {
   margin: 0 -2.5px
 }
 
-.banner-img{
+.poster-img{
   margin-top: -5%;
 }
-.banner-slider__item {
+.poster-slider__item {
   max-height: 448px;
   position: relative;
   outline: 0
 }
-.banner img {
+.poster img {
   height: 100%;
   width: 100%;
   -o-object-fit: cover;
@@ -933,7 +939,7 @@ main {
   box-shadow: 0 7px 16px rgba(0,0,0,.25);
   border-radius: 5px
 }
-.banner h1 {
+.poster h1 {
   position: absolute;
   bottom: 72px;
   left: 93px;
@@ -1359,6 +1365,15 @@ main {
   text-align: center;
   color: #fff
 }
+
+.item__title {
+  text-decoration: underline;
+}
+
+.item__title:hover {
+  color: #81becb;
+}
+
 .films .rating__item {
   border-radius: 50%
 }
@@ -1455,11 +1470,17 @@ main {
   margin-top: 10px
 }
 .film-like__item h3 {
+  text-decoration: underline;
   font-weight: 500;
   font-size: 22px;
   line-height: 26px;
   color: #fff
 }
+
+.film-like__item h3:hover {
+  color: #81becb;
+}
+
 .film-podb__item img {
   -webkit-filter: drop-shadow(0 7px 16px rgba(0, 0, 0, .14));
   filter: drop-shadow(0 7px 16px rgba(0, 0, 0, .14));
@@ -1581,7 +1602,7 @@ footer {
   box-shadow: 0 -7px 16px rgba(0,0,0,.25);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  margin-top: 100px;
+  margin-top: auto;
   padding: 32px 0;
   padding-bottom: 12px
 }
@@ -1845,9 +1866,9 @@ footer {
   }
 }
 @media screen and (max-width:1280px) {
-  .banner,
-  .banner-slider,
-  .banner-slider__item {
+  .poster,
+  .poster-slider,
+  .poster-slider__item {
     max-height: 380px
   }
   .page-catalog .film-podb__block {
@@ -1861,7 +1882,7 @@ footer {
   .footer__description {
     max-width: 400px
   }
-  .banner h1 {
+  .poster h1 {
     bottom: 40px;
     left: 60px
   }
@@ -1895,7 +1916,7 @@ footer {
     -ms-transform: translateY(-100%) scaleY(-1);
     transform: translateY(-100%) scaleY(-1)
   }
-  .banner h1 {
+  .poster h1 {
     max-width: 600px
   }
   .header__nav .header__top_mob {
@@ -2001,7 +2022,7 @@ footer {
   }
 }
 @media screen and (max-width:768px) {
-  .banner h1 {
+  .poster h1 {
     font-size: 25px;
     line-height: 102.5%;
     max-width: 300px
@@ -2023,23 +2044,23 @@ footer {
   .films .lft .film__trailer {
     margin-top: 10px
   }
-  .banner-slider .price__bottom {
+  .poster-slider .price__bottom {
     display: none
   }
-  .banner-slider .price__rht .price__bottom {
+  .poster-slider .price__rht .price__bottom {
     display: block;
     font-size: 10px;
     line-height: 12px;
     margin-top: 3px
   }
-  .banner-slider .price__rht .price__bottom span {
+  .poster-slider .price__rht .price__bottom span {
     font-size: 10px;
     line-height: 12px
   }
-  .banner-slider .price .stars {
+  .poster-slider .price .stars {
     margin: 0 -1.5px
   }
-  .banner-slider .price .star {
+  .poster-slider .price .star {
     margin: 0 1.5px;
     width: 8px;
     height: 8px;
@@ -2047,25 +2068,25 @@ footer {
     display: -ms-flexbox;
     display: flex
   }
-  .banner-slider .price .star svg {
+  .poster-slider .price .star svg {
     width: 8px;
     height: 8px
   }
-  .banner-slider .price__top {
+  .poster-slider .price__top {
     -webkit-box-align: start;
     -ms-flex-align: start;
     align-items: flex-start
   }
-  .banner-slider .price {
+  .poster-slider .price {
     padding: 4px;
     min-width: 100px
   }
-  .banner-slider .price__b {
+  .poster-slider .price__b {
     font-size: 18px;
     line-height: 21px;
     margin-right: 6px
   }
-  .banner-slider .price__rht .mark {
+  .poster-slider .price__rht .mark {
     margin-bottom: 1px;
     font-size: 12px;
     line-height: 14px
@@ -2115,10 +2136,10 @@ footer {
     font-size: 20px;
     line-height: normal
   }
-  .banner,
-  .banner img,
-  .banner-slider,
-  .banner-slider__item {
+  .poster,
+  .poster img,
+  .poster-slider,
+  .poster-slider__item {
     max-height: 210px;
     height: 210px
   }
@@ -2211,6 +2232,7 @@ footer {
     margin-top: 6px
   }
   .film-like__item h3 {
+    text-decoration: underline;
     font-size: 16px;
     line-height: 19px
   }
@@ -2392,10 +2414,10 @@ footer {
     margin-bottom: 20px;
     padding-bottom: 15px
   }
-  .banner {
+  .poster {
     margin-bottom: 20px
   }
-  .subbanner {
+  .subposter {
     padding-bottom: 0
   }
   .film-block {
@@ -2408,7 +2430,7 @@ footer {
   .beadcrumbs {
     padding: 15px 10px
   }
-  .banner h1 {
+  .poster h1 {
     bottom: 50px;
     left: 15px
   }

@@ -12,7 +12,7 @@ from django.urls import reverse
 class Genre(models.Model):
 	'''Жанр фильма'''
 	name = models.CharField(max_length=255)
-	slug = models.SlugField(blank=True)
+	slug = models.SlugField(blank=True, max_length=255)
 	image = models.ImageField(upload_to='genres/')
 
 	def __str__(self):
@@ -85,7 +85,7 @@ class Picture(models.Model):
 	premiere_in_Russia = models.CharField('Премьера в России', max_length=255, blank=True, null=True)
 	rating_kinopoisk = models.FloatField('рейтинг от кинопоиска', blank=True, null=True)
 	rating_imdb = models.FloatField('рейтинг от IMDB', blank=True, null=True)
-	slug = models.SlugField(blank=True)
+	slug = models.SlugField(blank=True, max_length=255)
 	facts = models.TextField('список фактов', blank=True, null=True)
 	created = models.DateTimeField('Дата создания картины',auto_now_add=True)
 
@@ -108,7 +108,7 @@ class Picture(models.Model):
 		return self.similar_picture.order_by('-released')
 
 	def save(self):
-		self.slug = f'{self.id}-{slugify(unidecode(self.name_in_russian))}'
+		self.slug = f'{self.id}-{slugify(unidecode(self.name_in_russian))}'[:60]
 		super(Picture, self).save()
 
 class PictureFrames(models.Model):
@@ -129,7 +129,7 @@ class Compilation(models.Model):
 	main_genre = models.ManyToManyField(Genre, related_name='collections_genre')
 	main_genre_text = models.TextField()
 	tags = TaggableManager()
-	slug = models.SlugField(blank=True)
+	slug = models.SlugField(blank=True, max_length=255)
 	views = models.IntegerField('Кол-во просмотров подборки', default=0)
 	created = models.DateTimeField('Дата создания', auto_now_add=True)
 
@@ -206,7 +206,7 @@ class Compilation(models.Model):
 		return similar_collections
 
 	def save(self):
-		self.slug = f'{slugify(unidecode(self.name))}'
+		self.slug = slugify(unidecode(self.name))[:60]
 		super(Compilation, self).save()
 
 

@@ -148,9 +148,9 @@ class Parser():
 					if self.create_picture(id_) != False:
 						picture = self.create_picture(id_)
 						pictures.append(picture)
-						# similar_pictures = self.add_all_similar_pictures(id_)
-						# for i in similar_pictures:
-						# 	picture.similar_picture.add(i)
+						similar_pictures = self.add_all_similar_pictures(id_)
+						for i in similar_pictures:
+							picture.similar_picture.add(i)
 
 				self.add_pictures_in_collection(pictures, new_complitation)
 				if new_complitation.pictures.count() < 1:

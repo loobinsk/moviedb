@@ -169,7 +169,7 @@ $(document).ready(function () {
 
 	if( $('.poster-slider__item').length == 1 ){
 		$('.slick-dots').hide()
-		console.log($('.slick-dots').hide())
+		console.log('rs')
 	}
 
 
@@ -269,7 +269,7 @@ $(document).ready(function () {
 		let heightDocument = $(document).height()
 		let heightFooter = $('footer').height()
 
-		let heightSum = ((scrollTopDocument + heightWindow)/0.2) - heightDocument + heightFooter
+		let heightSum = ((scrollTopDocument + heightWindow)/0.1) - heightDocument + heightFooter
 
 		// Каталог
 		// Каталог

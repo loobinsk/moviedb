@@ -43,12 +43,21 @@ class Parser():
 		self.yandex_key = 'https://yandex.ru/search/xml?user=sniffer11&key=03.84419783:0d50a8be485b8062a4ef7a795f72fe69'
 		self.request = f'url:https://www.kinopoisk.ru/film/* {query} -episodes'
 
+		self.type_collection = None
+
 		if 'ериал' in query and 'ильм' not in query:
 			self.request = f'url:https://www.kinopoisk.ru/series/* {query} -episodes -film'
+			self.type_collection = 1
 		elif 'ильм' in query and 'ериал' in query:
 			self.request = f'url:https://www.kinopoisk.ru/* {query} -episodes -media -lists -like'
+			self.type_collection = 0
 		elif 'ильм' in query and 'ериал' not in query:
 			self.request = f'url:https://www.kinopoisk.ru/film/* {query} -episodes -series'
+			self.type_collection = 0
+		elif 'мульт' in query:
+			self.type_collection = 2
+		elif 'аниме' in query:
+			self.type_collection = 3
 
 		self.number_films = f'&groupby=groups-on-page%3D{100}'
 		self.URL = self.yandex_key+'&query='+self.request+'&l10n=ru'+self.number_films
@@ -94,6 +103,7 @@ class Parser():
 				new_complitation = Compilation(name=self.name,
 											poster='compilations/'+slug+'.jpg',
 											description=self.desc,
+											type_collections = self.type_collection,
 										)
 				new_complitation.save()
 				new_complitation.add_tags()
@@ -106,9 +116,6 @@ class Parser():
 					if self.create_picture(i) != False and i not in listf:
 						picture = self.create_picture(i)
 						pictures.append(picture)
-						similar_pictures = self.add_all_similar_pictures(i)
-						for i in similar_pictures:
-							picture.similar_picture.add(i)
 						count+=1
 						listf.append(i)
 					else:
@@ -133,11 +140,13 @@ class Parser():
 				path = path+'compilations/'+slug+'.jpg'
 				out = open(path, 'wb')
 				poster = requests.get(self.Parse_yandex_images(self.query))
+				time.sleep(5)
 				out.write(poster.content)
 				out.close()
 
 				new_complitation = Compilation(name=self.query,
 											poster='compilations/'+slug+'.jpg',
+											type_collections = self.type_collection,
 										)
 				new_complitation.save()
 				new_complitation.add_tags()
@@ -148,9 +157,9 @@ class Parser():
 					if self.create_picture(id_) != False:
 						picture = self.create_picture(id_)
 						pictures.append(picture)
-						similar_pictures = self.add_all_similar_pictures(id_)
-						for i in similar_pictures:
-							picture.similar_picture.add(i)
+						# similar_pictures = self.add_all_similar_pictures(id_)
+						# for i in similar_pictures:
+						# 	picture.similar_picture.add(i)
 
 				self.add_pictures_in_collection(pictures, new_complitation)
 				if new_complitation.pictures.count() < 1:
@@ -200,7 +209,7 @@ class Parser():
 				for i in facts:
 					facts_list.append(list(i.values()))
 
-			poster = list(JsonData["poster"].values())[0] #постер картины
+			poster = list(JsonData["poster"].values())[1] #постер картины
 			if poster == None:
 				print('нет постера, идем дальше')
 				return False
@@ -214,10 +223,13 @@ class Parser():
 				slug = slugify(unidecode(name))
 				path = path+'posters/'+slug+'.jpg'
 				out = open(path, 'wb')
-				poster = requests.get(poster)
-				out.write(poster.content)
-				out.close()
-				poster = 'posters/'+slug+'.jpg'
+				try:
+					poster = requests.get(poster)
+					out.write(poster.content)
+					out.close()
+					poster = 'posters/'+slug+'.jpg'
+				except:
+					return False 
 
 
 			slogan = JsonData["slogan"] #слоган
@@ -483,17 +495,17 @@ class Parser():
 					'x-youtube-client-name': '1',
 					'x-youtube-client-version': '2.20200605.00.00',
 				}
-		token_page = requests.get(url, headers=headers).text
-		json_text = re.findall(r'(\{"responseContext".+\{\}\}\}|\{"responseContext".+"\]\})', token_page)[0]
-		text = json_text.split('videoId')[1]
-		text = text[2:]
-		video_id = text.split('"')[1]
-		print(video_id)
-
-
-		print('итоговый айди', video_id)
-		picture.trailer = video_id
-		picture.save()
+		try:
+			token_page = requests.get(url, headers=headers).text
+			json_text = re.findall(r'(\{"responseContext".+\{\}\}\}|\{"responseContext".+"\]\})', token_page)[0]
+			text = json_text.split('videoId')[1]
+			text = text[2:]
+			video_id = text.split('"')[1]
+			picture.trailer = video_id
+			picture.save()
+		except:
+			picture.trailer = None
+			picture.save()
 
 		return True
 

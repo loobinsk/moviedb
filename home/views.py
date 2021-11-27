@@ -36,7 +36,10 @@ def search_page(request):
 	collections = Compilation.objects.filter(name__search=query)
 	print(collections)
 
+	title = f'Подборки по запросу "{query}"'
+
 	context = {
+		'title': title,
 		'genres': genres,
 		'query': query,
 		'collections':collections
@@ -49,8 +52,8 @@ def collection_detail(request, slug):
 	collection = Compilation.objects.get(slug=slug)
 	collection.views += 1
 	collection.save()
-	best_films = Picture.objects.filter(collections=collection).order_by('-rating_kinopoisk')[:15]
-	new_films = Picture.objects.filter(collections=collection).order_by('-released')[:15]
+	best_films = Picture.objects.filter(collections=collection).order_by('-rating_kinopoisk')[:10]
+	new_films = Picture.objects.filter(collections=collection).order_by('-released')[:10]
 	popular_collections = Compilation.objects.all().order_by('-views').exclude(slug=slug)[:5]
 
 	context = {
@@ -83,9 +86,12 @@ def actors_list(request):
 
 	all_actors = Actor.objects.all()[:500]
 
+	title = 'Все актеры'
+
 	context = {
 			'all_actors': all_actors,
 			'genres': genres,
+			'title': title,
 		}
 	return render(request, template, context)
 
@@ -97,10 +103,13 @@ def collection_list(request, genre=None):
 		genre = Genre.objects.get(slug=genre)
 		genre_name = genre.name
 		all_collections = Compilation.objects.filter(main_genre=genre).order_by('views')[:500]
+		title = 'Все подборки по жанру '+genre_name
 	else:
 		all_collections = Compilation.objects.all().order_by('views')[:500]
+		title = 'Все подборки'
 
 	context = {
+		'title': title,
 		'genre': genre_name,
 		'genres': genres,
 		'all_collections': all_collections
@@ -110,9 +119,12 @@ def collection_list(request, genre=None):
 def film_list(request):
 	template = 'catalog.html'
 
-	all_films = Picture.objects.all().order_by('-rating_kinopoisk')[:100]
+	all_films = Compilation.objects.filter(type_collections=0).order_by('-views')[:100]
+
+	title = 'Все подборки фильмов'
 
 	context = {
+		'title': title,
 		'genres': genres,
 		'all_films': all_films,
 		}
@@ -121,10 +133,13 @@ def film_list(request):
 def series_list(request):
 	template = 'catalog.html'
 
-	all_series = Picture.objects.filter(
-		type_picture=1).order_by('-rating_kinopoisk')[:100]
+	all_series = Compilation.objects.filter(
+		type_collections=1).order_by('-views')[:100]
+
+	title = 'Все подборки сериалов'
 
 	context = {
+		'title': title,
 		'genres': genres,
 		'all_series': all_series,
 		}
@@ -133,10 +148,13 @@ def series_list(request):
 def cartoons_list(request):
 	template = 'catalog.html'
 
-	all_cartoons = Picture.objects.filter(
-		type_picture=2).order_by('-rating_kinopoisk')[:100]
+	all_cartoons = Compilation.objects.filter(
+		type_collections=2).order_by('-views')[:100]
+
+	title = 'Все подборки мультфильмов'
 
 	context = {
+		'title': title,
 		'genres': genres,
 		'all_cartoons': all_cartoons,
 		}
@@ -145,10 +163,13 @@ def cartoons_list(request):
 def anime_list(request):
 	template = 'catalog.html'
 
-	all_anime = Picture.objects.filter(
-		type_picture=3).order_by('-rating_kinopoisk')[:100]
+	all_anime = Compilation.objects.filter(
+		type_collections=3).order_by('-views')[:100]
+
+	title = 'Все подборки аниме'
 
 	context = {
+		'title': title,
 		'genres': genres,
 		'all_anime': all_anime,
 		}

@@ -829,6 +829,8 @@ main {
 .slick-dots .slick-active {
   background: #fff
 }
+
+
 .slick-dots li {
   width: 9px;
   height: 9px;
@@ -1317,8 +1319,38 @@ main {
   align-items: center;
   -ms-flex-pack: distribute;
   justify-content: space-around;
-  margin-top: 20px
+  margin-top: 20px;
 }
+
+.films .film__rating_active{
+  position: absolute;
+  bottom: 0;
+  border-top: none;
+  width: 100%;
+}
+
+.collection_set {
+    background: #2b2b2b;
+    margin: 2px;
+    height: 100%;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.film__title-mobile__cont{
+  width: 100%;
+  position: absolute;
+  top: 0;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.7);
+}
+.film__title-mobile{
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 47px;
+  color: #fff;
+}
+
 .films .circleProgressCanvas {
   width: 121px!important;
   height: 121px!important;
@@ -1429,7 +1461,8 @@ main {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  height: 666px
+  height: 666px;
+  position: relative;
 }
 .films .film__photo .photo_img {
   border-radius: 5px;
@@ -1794,7 +1827,17 @@ footer {
   z-index: 1;
   border-radius: 10px
 }
+
+@media screen and (min-width: 768px) {
+  .film__title-mobile__cont {
+    display: none;
+  }
+}
+
+
+
 @media screen and (max-width:1440px) {
+
   .page-catalog .film-podb__block {
     -ms-grid-columns: (1fr)[5];
     grid-template-columns: repeat(5,1fr)
@@ -2022,6 +2065,15 @@ footer {
   }
 }
 @media screen and (max-width:768px) {
+
+
+  .films .film__title {
+    display: none;
+  }
+  .films .title_eng_active {
+    display: none;
+  }
+
   .poster h1 {
     font-size: 25px;
     line-height: 102.5%;

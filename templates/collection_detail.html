@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static embed_video_tags humanize %}
 
+{% block title %}{{ collection.name }} - список лучших и новых картин{% endblock %}
+
 {% block content %}trailer
     <div class="page page-index">
       <div class="wrapper">
@@ -15,7 +17,10 @@
           </div>
           <p class="subposter">{{ collection.description }}</p>
           <div class="film-block">
-            <h2>Лучшие фильмы подборки</h2>
+            <h2>
+            10 лучших фильмов подборки
+            <p>10 фильмов подборки, отсортированные по убыванию рейтинга</p>
+          </h2>
             <div class="film-block__slider">
               {% for i in best_films %}
               <div class="film-block__item">
@@ -40,7 +45,10 @@
             </div>
           </div>
           <div class="film-block">
-            <h2>Новые фильмы подборки</h2>
+            <h2>
+              10 новых фильмов
+              <p>10 фильмов подборки, отсортированные по дате выхода от самых новых к более старым</p>
+            </h2>
             <div class="film-block__slider">
               {% for i in new_films %}
               <div class="film-block__item">
@@ -76,34 +84,42 @@
                       <div class="youtube" id="{{ i.trailer }}"></div>
                     </div>
                   </div>
-                  <div class="film__photo"><img class="photo_img" loading="lazy" data-src="{{ i.poster.url }}" alt="Film">
-                    <div class="photo__play"><img loading="lazy" data-src="{% static 'img/youtube.svg' %}" alt="Play"><span>Смотреть</span></div>
-                  </div>
-                  <div class="film__rating">
-                    <div class="itm">
-                      <div class="text"><b>{{ i.rating_kinopoisk }}</b><span>Кинопоиск</span></div>
-                      <div class="counter" data-cp-percentage="100" data-cp-color="#FF6D01"></div>
+                  <div class="film__photo"><img class="photo_img" loading="lazy" alt="Film" src="{{ i.poster.url }}">
+                    <div class="photo__play"><img loading="lazy" alt="Play" src="{% static 'img/youtube.svg' %}"><span>Смотреть</span></div>
+                    <div class="film__rating film__rating_active">
+                      <div class="itm">
+                        <div class="text"><b>7,7</b><span>Кинопоиск</span></div>
+                        <div class="counter" data-cp-percentage="100" data-cp-color="#FF6D01" style="height: 120px;"><span class="percentage"></span><canvas class="circleProgressCanvas" width="240" height="240" style="height: 120px; width: 120px;"></canvas></div>
+                      </div>
+                      <div class="itm">
+                        <div class="text"><b>7,4</b><span>IMDb</span></div>
+                        <div class="counter" data-cp-percentage="100" data-cp-color="#E3AC3C" style="height: 120px;"><span class="percentage"></span><canvas class="circleProgressCanvas" width="240" height="240" style="height: 120px; width: 120px;"></canvas></div>
+                      </div>
                     </div>
-                    <div class="itm">
-                      <div class="text"><b>{{ i.rating_imdb }}</b><span>IMDb</span></div>
-                      <div class="counter" data-cp-percentage="100" data-cp-color="#E3AC3C"></div>
+                    <div class="film__title-mobile__cont">
+                      <a href="{{ i.get_absolute_url }}"><h2 class="film__title-mobile">{{ i.name_in_russian }} ({{ i.released }}</h2></a>
+                      <h2 style="margin-bottom: 5px;" class="film__title_eng ">{% if i.name_in_english  %}{{ i.name_in_english }}{% endif %}</h2>
                     </div>
                   </div>
                 </div>
                 <div class="rht">
-                  <a href="{{ i.get_absolute_url }}"><h2 class="film__title">{{ i.name_in_russian }} ({{ i.released }})</h2></a>
-                  {% if i.slogan %}
+                  <a href="{{ i.get_absolute_url }}"><h2 class="film__title ">{{ i.name_in_russian }} ({{ i.released }})</h2></a>
+<!--                   {% if i.slogan %}
                    <p>{{ i.slogan }}</p>
-                  {% endif %}
+                  {% endif %} -->
                   {% if i.name_in_english  %}
-                   <h2 class="film__title_eng">{{ i.name_in_english }}</h2>
+                   <h2 class="film__title_eng title_eng_active">{{ i.name_in_english }}</h2>
                   {% else %}
                     <h2 class="film__title_eng"></h2>
                   {% endif %}
                   <div class="info__top">
                     <div class="info__item">
                       <h4>Продолжительность</h4>
-                      <p>{{ i.duration }} минут</p>
+                      {% if i.duration %}
+                       <p>{{ i.duration }} минут</p>
+                      {% else %}
+                        <p> - </p>
+                      {% endif %}
                     </div>
                     <div class="info__item">
                       <h4>Год выпуска</h4>
@@ -123,7 +139,7 @@
                       <div class="item__name">Жанр</div>
                       <div class="item__text">
                         {% for genre in i.genres.all %}
-                          {{ genre.name }}{% if not forloop.last %},{% endif %}
+                          <a href="{{ genre.get_absolute_url }}">{{ genre.name }}{% if not forloop.last %},{% endif %}</a>
                         {% endfor %}
                       </div>
                     </div>
@@ -147,13 +163,20 @@
                       <div class="item__name">Участвует в подборках</div>
                       <div class="item__text">
                         {% for collection in i.collections.all %}
-                         <a href="{{ collection.get_absolute_url }}">{{ collection.name }}{% if not forloop.last %}<br>{% endif %}</a>
+                        <br>
+                        <a class="collection_set" href="{{ collection.get_absolute_url }}">
+                          {{ collection.name }}
+                          {% if not forloop.last %}
+                          <br>
+                          {% endif %}
+                        </a>
+                        <br>
                         {% endfor %}
                       </div>
                     </div>
                   </div>
                   <div class="film__description">
-                    <h3>О чем фильм “{{ i.name_in_russian }} ({{ i.released }})”</h3>
+                    <h3>Описание:</h3>
                     <p>{{ i.description }}</p>
                     <div class="more">Еще..</div>
                   </div>

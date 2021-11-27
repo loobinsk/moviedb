@@ -37,7 +37,7 @@ class Country(models.Model):
 
 class Actor(models.Model):
 	''' Актер '''
-	url_photo = models.TextField()
+	url_photo = models.TextField(blank=True, null=True)
 	name = models.CharField(max_length=255)
 
 	def __str__(self):
@@ -85,7 +85,7 @@ class Picture(models.Model):
 	premiere_in_Russia = models.CharField('Премьера в России', max_length=255, blank=True, null=True)
 	rating_kinopoisk = models.FloatField('рейтинг от кинопоиска', blank=True, null=True)
 	rating_imdb = models.FloatField('рейтинг от IMDB', blank=True, null=True)
-	slug = models.SlugField(blank=True, max_length=255)
+	slug = models.SlugField(blank=True, max_length=255, null=True)
 	facts = models.TextField('список фактов', blank=True, null=True)
 	created = models.DateTimeField('Дата создания картины',auto_now_add=True)
 
@@ -94,6 +94,9 @@ class Picture(models.Model):
 
 	def __str__(self):
 		return f'{self.name_in_russian}, {self.released}, {self.id}'
+
+	def get_name(self):
+		return f'{self.name_in_russian}, {self.released}, {self.genres.all()[0]}, {self.country.all()[0]}'
 		
 	def get_absolute_url(self):
 		return reverse('film_detail', args=[self.slug])
@@ -108,7 +111,7 @@ class Picture(models.Model):
 		return self.similar_picture.order_by('-released')
 
 	def save(self):
-		self.slug = f'{self.id}-{slugify(unidecode(self.name_in_russian))}'[:60]
+		self.slug = f'{self.id}-{slugify(unidecode(self.name_in_russian))}'[:50]
 		super(Picture, self).save()
 
 class PictureFrames(models.Model):
@@ -118,7 +121,18 @@ class PictureFrames(models.Model):
 	def __str__(self):
 		return f'кадр картины {self.picture.name_in_russian}'
 
-
+FILM = 0
+SERIAL = 1
+CARTOON = 2
+ANIME = 3
+ANIMATED_SERIES=4
+TYPE_COLLECTION = (
+    (FILM, 'Film'),
+    (SERIAL, 'Serial'),
+    (CARTOON, 'Cartoon'),
+    (ANIME, 'Anime'),
+    (ANIMATED_SERIES, 'animated-series')
+)
 
 class Compilation(models.Model):
 	''' Подборка картин '''
@@ -126,6 +140,7 @@ class Compilation(models.Model):
 	poster = models.ImageField('Постер подборки', blank=True, null=True)
 	pictures = models.ManyToManyField(Picture, related_name='collections')
 	name = models.CharField('Название',max_length=255, blank=True, null=True)
+	type_collections = models.PositiveSmallIntegerField('Тип подборки',choices=TYPE_COLLECTION, blank=True, null=True)
 	main_genre = models.ManyToManyField(Genre, related_name='collections_genre')
 	main_genre_text = models.TextField()
 	tags = TaggableManager()

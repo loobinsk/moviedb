@@ -37,3 +37,5 @@ class CompilationAdmin(admin.ModelAdmin):
 	search_fields = ['name']
 
 admin.site.register(models.Compilation, CompilationAdmin)
+
+admin.site.register(models.СollectionСategory)

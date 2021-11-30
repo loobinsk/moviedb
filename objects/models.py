@@ -90,13 +90,21 @@ class Picture(models.Model):
 	created = models.DateTimeField('Дата создания картины',auto_now_add=True)
 
 	def get_tags(self):
-		return f'{self.released}, {self.genres.all()[0]}, {self.country.all()[0]}'
+		try:
+			name = f'{self.released}, {self.genres.all()[0]}, {self.country.all()[0]}'
+		except:
+			name = f'{self.released}'
+		return name
 
 	def __str__(self):
 		return f'{self.name_in_russian}, {self.released}, {self.id}'
 
 	def get_name(self):
-		return f'{self.name_in_russian}, {self.released}, {self.genres.all()[0]}, {self.country.all()[0]}'
+		try:
+			name = f'{self.name_in_russian}, {self.released}, {self.genres.all()[0]}, {self.country.all()[0]}'
+		except:
+			name = f'{self.name_in_russian}, {self.released}'
+		return name
 		
 	def get_absolute_url(self):
 		return reverse('film_detail', args=[self.slug])
@@ -120,6 +128,8 @@ class PictureFrames(models.Model):
 
 	def __str__(self):
 		return f'кадр картины {self.picture.name_in_russian}'
+
+
 
 FILM = 0
 SERIAL = 1
@@ -151,8 +161,26 @@ class Compilation(models.Model):
 	def __str__(self):
 		return self.name
 
+	def get_name(self):
+		return self.name[0].upper() + self.name[1:]
+
 	def get_absolute_url(self):
 		return reverse('collection_detail', args=[self.slug])
+
+	def get_collection_type_name(self):
+		name = None
+		if self.type_collections == 0:
+			name = 'фильмов'
+		elif self.type_collections == 1:
+			name='сериалов'
+		elif self.type_collections == 2:
+			name='мультфильмов'
+		elif self.type_collections == 3:
+			name='аниме'
+		elif self.type_collections == 4:
+			name='аниме сериалов'
+
+		return name
 
 	def get_pictures_count(self):
 		return self.pictures.count()
@@ -221,8 +249,30 @@ class Compilation(models.Model):
 		return similar_collections
 
 	def save(self):
-		self.slug = slugify(unidecode(self.name))[:60]
+		self.slug = slugify(unidecode(self.name))[:50]
 		super(Compilation, self).save()
+
+class СollectionСategory(models.Model):
+	name = models.CharField(max_length=255)
+	image = models.ImageField('Картинка категории', blank=True, null=True)
+	keywords = models.TextField()
+	slug = models.SlugField(blank=True, null=True, max_length=255)
+	collections = models.ManyToManyField(Compilation, blank=True, null=True)
+
+	def get_keywords_list(self):
+		list_ = self.keywords.split(', ')
+		return list_
+
+	def get_absolute_url(self):
+		return reverse('themes_detail', args=[self.slug])
+
+	def save(self):
+		super(СollectionСategory, self).save()
+		self.slug = slugify(unidecode(f'{self.name}-{self.pk}'))[:50]
+		super(СollectionСategory, self).save()
+
+	def __str__(self):
+		return self.name
 
 
 

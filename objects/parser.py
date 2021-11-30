@@ -9,6 +9,7 @@ from django.templatetags.static import static
 
 from .models import Genre, Country, Actor, Director
 from .models import Picture, Compilation
+from .models import СollectionСategory
 
 from django.conf import settings
 
@@ -51,7 +52,7 @@ class Parser():
 		elif 'ильм' in query and 'ериал' in query:
 			self.request = f'url:https://www.kinopoisk.ru/* {query} -episodes -media -lists -like'
 			self.type_collection = 0
-		elif 'ильм' in query and 'ериал' not in query:
+		elif 'ильм' in query and 'ериал' not in query and 'мульт' not in query:
 			self.request = f'url:https://www.kinopoisk.ru/film/* {query} -episodes -series'
 			self.type_collection = 0
 		elif 'мульт' in query:
@@ -106,6 +107,14 @@ class Parser():
 											type_collections = self.type_collection,
 										)
 				new_complitation.save()
+
+				for i in СollectionСategory.objects.all():
+					words = new_complitation.name.split(' ')
+					for word in words:
+						if word in i.get_keywords_list():
+							i.collections.add(new_complitation)
+
+
 				new_complitation.add_tags()
 				pictures = []
 				count = 0
@@ -123,7 +132,11 @@ class Parser():
 						count+=1
 					print(count, count_query)
 
-				self.add_pictures_in_collection(pictures, new_complitation)
+				try:
+					self.add_pictures_in_collection(pictures, new_complitation)
+				except:
+					new_complitation.delete()
+					
 				if new_complitation.pictures.count() < 1:
 					new_complitation.delete()
 				else:
@@ -149,6 +162,13 @@ class Parser():
 											type_collections = self.type_collection,
 										)
 				new_complitation.save()
+
+				for i in СollectionСategory.objects.all():
+					words = new_complitation.name.split(' ')
+					for word in words:
+						if word in i.get_keywords_list():
+							i.collections.add(new_complitation)
+
 				new_complitation.add_tags()
 				pictures = []
 				for i in range(0, self.count):

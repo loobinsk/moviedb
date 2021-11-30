@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог аниме{% endblock %}
+{% block description %}Каталог аниме{% endblock %}
+
+
+{% block content  %}
+    <div class="page page-catalog">
+      <div class="wrapper">
+        <main>
+          <div class="beadcrumbs"><a href="/">Главная</a>{% if genre %}<a href="{% url 'collection_list' %}">Подборки</a><span>{{genre}}</span>{% else %}<span>Подборки</span>{% endif %}</div>
+          <div class="film-block">
+            <h2>Все аниме:</h2>
+            <div class="film-podb__block">
+              {% for i in anime %}
+                <div class="film-podb__item">
+                  <a href="{{ i.get_absolute_url }}">
+                    <img src="{{ i.poster.url }}" alt="Film">
+                    <h3>{{ i.name_in_russian }}</h3>
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+            <!-- <div class="loading"></div> -->
+          </div>
+        </main>
+      </div>
+    </div>
+{% endblock %}

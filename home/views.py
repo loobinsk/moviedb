@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from objects.models import Compilation, Genre, Picture, Actor
+from objects.models import Compilation, Genre, Picture, Actor, СollectionСategory
 from objects.parser import Parser
 import requests
 from bs4 import BeautifulSoup
@@ -8,10 +8,9 @@ from embed_video.backends import detect_backend
 from django.db.models import F
 
 
-genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
-
 def homepage(request):
 	template = 'base.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	new_collections = Compilation.objects.all().order_by('-created')[:5]
 	popular_collections = Compilation.objects.all().order_by('-views')[:5]
@@ -31,6 +30,7 @@ def homepage(request):
 
 def search_page(request):
 	template = 'catalog.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	query = request.POST['query']
 	collections = Compilation.objects.filter(name__search=query)
@@ -48,6 +48,7 @@ def search_page(request):
 
 def collection_detail(request, slug):
 	template = 'collection_detail.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	collection = Compilation.objects.get(slug=slug)
 	collection.views += 1
@@ -68,6 +69,7 @@ def collection_detail(request, slug):
 
 def film_detail(request, slug):
 	template = 'picture_detail.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	new_collections = Compilation.objects.all().order_by('-created')[:5]
 	popular_collections = Compilation.objects.all().order_by('-views')[:5]
@@ -83,6 +85,7 @@ def film_detail(request, slug):
 
 def actors_list(request):
 	template = 'catalog.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	all_actors = Actor.objects.all()[:500]
 
@@ -97,6 +100,8 @@ def actors_list(request):
 
 def collection_list(request, genre=None):
 	template = 'catalog.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
+	desc = 'Мы собрали для вас самую большу базу подборок с фильмами, сериалами, мультфильмами и анимэ. Выбирайте направление и наслаждайтесь просмотром!'
 
 	genre_name = None
 	if genre:
@@ -109,6 +114,7 @@ def collection_list(request, genre=None):
 		title = 'Все подборки'
 
 	context = {
+		'desc': desc,
 		'title': title,
 		'genre': genre_name,
 		'genres': genres,
@@ -118,6 +124,7 @@ def collection_list(request, genre=None):
 
 def film_list(request):
 	template = 'catalog.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	all_films = Compilation.objects.filter(type_collections=0).order_by('-views')[:100]
 
@@ -132,6 +139,7 @@ def film_list(request):
 
 def series_list(request):
 	template = 'catalog.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	all_series = Compilation.objects.filter(
 		type_collections=1).order_by('-views')[:100]
@@ -147,6 +155,7 @@ def series_list(request):
 
 def cartoons_list(request):
 	template = 'catalog.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	all_cartoons = Compilation.objects.filter(
 		type_collections=2).order_by('-views')[:100]
@@ -162,6 +171,7 @@ def cartoons_list(request):
 
 def anime_list(request):
 	template = 'catalog.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
 
 	all_anime = Compilation.objects.filter(
 		type_collections=3).order_by('-views')[:100]
@@ -173,4 +183,76 @@ def anime_list(request):
 		'genres': genres,
 		'all_anime': all_anime,
 		}
+	return render(request, template, context)
+
+def themes_list(request):
+	template = 'themes_list.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
+
+	all_collection_category = СollectionСategory.objects.all()
+
+	context = {
+		'genres': genres,
+		'all_collections': all_collection_category,
+	}
+	return render(request, template, context)
+
+def themes_detail(request, themes_slug):
+	template = 'themes_detail.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
+
+	theme = СollectionСategory.objects.get(slug=themes_slug)
+
+	context = {
+		'genres': genres,
+		'theme': theme,
+	}
+	return render(request, template, context)
+
+def films(request):
+	template ='films.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
+
+	films = Picture.objects.filter(type_picture=0).order_by('-rating_kinopoisk')[:200]
+
+	context = {
+		'genres': genres,
+		'films':films,
+		}
+	return render(request, template, context)
+
+def series(request):
+	template ='series.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
+
+	series = Picture.objects.filter(type_picture=1).order_by('-rating_kinopoisk')[:200]
+
+	context = {
+		'genres': genres,
+		'series':series,
+	}
+	return render(request, template, context)
+
+def cartoons(request):
+	template ='cartoons.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
+
+	cartoons = Picture.objects.filter(type_picture=2).order_by('-rating_kinopoisk')[:200]
+
+	context = {
+		'genres': genres,
+		'cartoons':cartoons,
+	}
+	return render(request, template, context)
+
+def anime(request):
+	template ='anime.html'
+	genres = Genre.objects.annotate(count=Count('collections_genre')).order_by('-count')[:15]
+
+	anime = Picture.objects.filter(type_picture=3).order_by('-rating_kinopoisk')[:200]
+
+	context = {
+		'genres': genres,
+		'anime':anime,
+	}
 	return render(request, template, context)

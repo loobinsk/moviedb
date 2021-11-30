@@ -1,25 +1,27 @@
 {% extends 'base.html' %}
 {% load static embed_video_tags humanize %}
 
-{% block title %}{{ collection.name }} - список лучших и новых картин{% endblock %}
+{% block title %}{{ collection.get_name }} - {{ collection.get_pictures_count }} лучших и новых {{ collection.get_collection_type_name }}{% endblock %}
+{% block description %}Ищите фильмы по запросу {{ collection.name }}? Мы собрали для вас {{ collection.get_pictures_count }} лучших {{ collection.get_collection_type_name }} по этой теме. Выбирайте и наслажадайтесь просмотром!{% endblock %}
+
 
 {% block content %}trailer
     <div class="page page-index">
       <div class="wrapper">
         <main>
           <div class="poster">
-            <div class="beadcrumbs"><a href="#">Главная</a><a href="#">Подборки</a><span>{{ collection.name }}</span></div>
+            <div class="beadcrumbs"><a href="#">Главная</a><a href="#">Подборки</a><span>{{ collection.get_name }}</span></div>
             <div class="poster-slider">
               <div class="poster-slider__item"><img class="poster-img" loading="lazy" data-src="{{ collection.poster.url }}" alt="Poster">
-                <h1>{{ collection.name }}</h1>
+                <h1>{{ collection.get_name }}</h1>
               </div>
             </div>
           </div>
           <p class="subposter">{{ collection.description }}</p>
           <div class="film-block">
             <h2>
-            10 лучших фильмов подборки
-            <p>10 фильмов подборки, отсортированные по убыванию рейтинга</p>
+            10 лучших {{ collection.get_collection_type_name }} подборки
+            <p>10 {{ collection.get_collection_type_name }} подборки, отсортированные по убыванию рейтинга</p>
           </h2>
             <div class="film-block__slider">
               {% for i in best_films %}
@@ -46,8 +48,8 @@
           </div>
           <div class="film-block">
             <h2>
-              10 новых фильмов
-              <p>10 фильмов подборки, отсортированные по дате выхода от самых новых к более старым</p>
+              10 новых {{ collection.get_collection_type_name }}
+              <p>10 {{ collection.get_collection_type_name }} подборки, отсортированные по дате выхода от самых новых к более старым</p>
             </h2>
             <div class="film-block__slider">
               {% for i in new_films %}

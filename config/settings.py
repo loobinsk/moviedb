@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['192.168.43.77', '127.0.0.1', '185.117.155.250']
 
 
 # Application definition
+SITE_ID = 1
 
 INSTALLED_APPS = [
     'objects',
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'embed_video',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

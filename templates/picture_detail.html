@@ -4,6 +4,7 @@
 {% include 'header.html' %}
 
 {% block title %}{{ picture.get_name }} - дата выхода, отзывы, актеры, трейлер{% endblock %}
+{% block description %}Вся информация про фильм {{ picture.name_in_russian }} - дата выхода, рейтинг, актеры, трейлер и многое другое, а также фильмы, похожие на {{ picture.name_in_russian }}{% endblock %}
 
 {% block content %}
     <div class="page page-single">

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}{{ title }}{% endblock %}
+{% block description %}Каталог всех подборок фильмов по темам{% endblock %}
+
+{% block content %}
+    <div class="page page-catalog">
+      <div class="wrapper">
+        <main>
+          <div class="beadcrumbs"><a href="/">Главная</a><a href="{% url 'themes_list' %}">Темы</a></div>
+          <div class="film-block">
+          <h2>Все темы:</h2>
+          <div class="film-podb__block">
+              {% for i in all_collections %}
+                <div class="film-podb__item">
+                  <a href="{{ i.get_absolute_url }}">
+                    <img src="{{ i.image.url }}" alt="Film">
+                    <h3>{{ i.name }}</h3>
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+            <!-- <div class="loading"></div> -->
+          </div>
+        </main>
+      </div>
+    </div>
+{% endblock %}

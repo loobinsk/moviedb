@@ -204,6 +204,11 @@ header {
   width: 65%;
   margin-left: auto
 }
+
+.menu__link {
+  white-space: nowrap;
+}
+
 .header .have_child .menu__link {
   white-space: nowrap;
   position: relative
@@ -509,6 +514,7 @@ header {
   -webkit-filter: brightness(1);
   filter: brightness(1)
 }
+
 .page-catalog .beadcrumbs {
   position: static;
   padding-left: 0
@@ -694,6 +700,11 @@ header {
   left: 1.5%;
   top: 3%
 }
+
+.first_upercase:first-letter {
+  text-transform: capitalize;
+}
+
 .page-main__films li a:after {
   content: '';
   opacity: .4;

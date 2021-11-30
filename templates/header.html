@@ -14,17 +14,26 @@
               </div>
             </div>
             <ul class="header__menu">
-              <li class="menu__li have_child"><a class="menu__link" href="{% url 'collection_list' %}">Жанры</a>
+              <li class="menu__li have_child"><a class="menu__link" href="{% url 'collection_list' %}">Все подборки</a>
+                <ul>
+                  <li><a href="{% url 'films_list' %}">Фильмы</a></li>
+                  <li><a href="{% url 'series_list' %}">Сериалы</a></li>
+                  <li><a href="{% url 'cartoons_list' %}">Мультфильмы</a></li>
+                  <li><a href="{% url 'anime_list' %}">Аниме</a></li>
+                </ul>
+              </li>
+              <li class="menu__li have_child"><a class="menu__link" href="{% url 'collection_list' %}">По жанрам</a>
                 <ul>
                   {% for i in genres %}
                     <li><a href="{{ i.get_absolute_url }}">{{ i.name }}</a></li>
                   {% endfor %}
                 </ul>
               </li>
-              <li class="menu__li"><a class="menu__link" href="{% url 'films_list' %}">Фильмы</a></li>
-              <li class="menu__li"><a class="menu__link" href="{% url 'series_list' %}">Сериалы</a></li>
-              <li class="menu__li"><a class="menu__link" href="{% url 'cartoons_list' %}">Мультфильмы</a></li>
-              <li class="menu__li"><a class="menu__link" href="{% url 'anime_list' %}">Аниме</a></li>
+              <li class="menu__li"><a class="menu__link" href="{% url 'themes_list' %}">По темам</a></li>
+              <li class="menu__li"><a class="menu__link" href="{% url 'films' %}">Фильмы</a></li>
+              <li class="menu__li"><a class="menu__link" href="{% url 'series' %}">Сериалы</a></li>
+              <li class="menu__li"><a class="menu__link" href="{% url 'cartoons' %}">Мультфильмы</a></li>
+              <li class="menu__li"><a class="menu__link" href="{% url 'anime' %}">Аниме</a></li>
               <li class="menu__li"><a class="menu__link" href="{% url 'actors' %}">Актеры</a></li>
             </ul>
             <ul class="footer__socials">

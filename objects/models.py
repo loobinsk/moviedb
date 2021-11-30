@@ -19,7 +19,10 @@ class Genre(models.Model):
 		return self.name
 
 	def save(self):
-		self.slug = f'{self.id}-{slugify(unidecode(self.name))}'
+		super(Genre, self).save()
+		if self.slug == '' or self.slug == ' ':
+			self.slug = f'{self.id}-{slugify(unidecode(self.name))}'
+
 		super(Genre, self).save()
 
 	def get_genre_collections(self):
